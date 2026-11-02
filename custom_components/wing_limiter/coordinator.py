@@ -5,6 +5,7 @@ from __future__ import annotations
 import asyncio
 import logging
 from datetime import timedelta
+from typing import TYPE_CHECKING
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
@@ -16,6 +17,8 @@ from .osc import OscValue, WingClient
 from .parameters import PARAMETERS
 
 _LOGGER = logging.getLogger(__name__)
+if TYPE_CHECKING:
+    from .profiles import WingProfiles
 type WingData = dict[str, OscValue | None]
 
 
@@ -26,6 +29,7 @@ class WingLimiterCoordinator(DataUpdateCoordinator[WingData]):
         self, hass: HomeAssistant, entry: ConfigEntry, host: str, scan_interval: int
     ) -> None:
         self.client = WingClient(host)
+        self.profiles: WingProfiles | None = None
         self.command_lock = asyncio.Lock()
         super().__init__(
             hass,

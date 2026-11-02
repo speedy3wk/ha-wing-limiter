@@ -10,6 +10,7 @@ from homeassistant.core import HomeAssistant
 
 from .const import CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL, DOMAIN
 from .coordinator import WingLimiterCoordinator
+from .profiles import WingProfiles, async_setup_services, profile_store
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -25,10 +26,13 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     coordinator = WingLimiterCoordinator(hass, entry, host, scan_interval)
     # Raises ConfigEntryNotReady when WING is unreachable on startup
     await coordinator.async_config_entry_first_refresh()
+    coordinator.profiles = WingProfiles(coordinator, entry.entry_id)
+    await coordinator.profiles.async_load()
 
     hass.data.setdefault(DOMAIN, {})[entry.entry_id] = coordinator
 
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
+    async_setup_services(hass)
     return True
 
 
@@ -37,3 +41,8 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     if unload_ok:
         hass.data[DOMAIN].pop(entry.entry_id)
     return unload_ok
+
+
+async def async_remove_entry(hass: HomeAssistant, entry: ConfigEntry) -> None:
+    """Delete only the profile store belonging to the removed entry."""
+    await profile_store(hass, entry.entry_id).async_remove()

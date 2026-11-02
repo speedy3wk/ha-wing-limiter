@@ -1,0 +1,84 @@
+save_profile:
+  name: Save profile
+  description: Save a fresh, complete COMP and sidechain snapshot for a main bus.
+  fields:
+    entry_id:
+      name: Integration entry
+      required: true
+      selector:
+        config_entry:
+          integration: wing_limiter
+    main_index:
+      name: Main bus
+      required: true
+      selector:
+        number:
+          min: 1
+          max: 4
+          mode: box
+    name:
+      name: Profile name
+      required: true
+      selector:
+        text:
+    overwrite:
+      name: Replace existing profile
+      default: false
+      selector:
+        boolean:
+restore_profile:
+  name: Restore profile
+  description: Restore a saved profile to its original main bus, including compressor on/off. COMP must already be selected on the console. Writes are verified; UDP changes are not atomic.
+  fields:
+    entry_id:
+      name: Integration entry
+      required: true
+      selector:
+        config_entry:
+          integration: wing_limiter
+    main_index:
+      name: Main bus
+      required: true
+      selector:
+        number:
+          min: 1
+          max: 4
+          mode: box
+    name:
+      name: Profile name
+      required: true
+      selector:
+        text:
+delete_profile:
+  name: Delete profile
+  description: Delete a saved main bus profile.
+  fields:
+    entry_id:
+      name: Integration entry
+      required: true
+      selector:
+        config_entry:
+          integration: wing_limiter
+    main_index:
+      name: Main bus
+      required: true
+      selector:
+        number:
+          min: 1
+          max: 4
+          mode: box
+    name:
+      name: Profile name
+      required: true
+      selector:
+        text:
+list_profiles:
+  name: List profiles
+  description: Return saved profile names, main bus numbers and Dynamics models.
+  fields:
+    entry_id:
+      name: Integration entry
+      required: true
+      selector:
+        config_entry:
+          integration: wing_limiter
