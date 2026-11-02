@@ -1,30 +1,22 @@
 """Config flow for the Wing Limiter integration."""
+
 from __future__ import annotations
 
-import socket
+import logging
 
 import voluptuous as vol
-
 from homeassistant import config_entries
 from homeassistant.const import CONF_HOST
 
-from .const import DEFAULT_PORT, DEFAULT_SCAN_INTERVAL, CONF_SCAN_INTERVAL, DOMAIN
+from .const import CONF_SCAN_INTERVAL, DEFAULT_PORT, DEFAULT_SCAN_INTERVAL, DOMAIN
+from .osc import WingClient
+
+_LOGGER = logging.getLogger(__name__)
 
 
 def _test_wing_connection(host: str, port: int) -> None:
-    """Blocking: send a GET for /main/1/dyn/on and wait for any reply.
-
-    Raises socket.timeout if WING does not respond within 3 seconds,
-    or OSError / socket.gaierror on network errors.
-    """
-    from pythonosc.osc_message_builder import OscMessageBuilder  # noqa: PLC0415
-
-    with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
-        sock.bind(("", 0))
-        sock.settimeout(3.0)
-        builder = OscMessageBuilder(address="/main/1/dyn/on")
-        sock.sendto(builder.build().dgram, (host, port))
-        sock.recvfrom(4096)  # raises socket.timeout when unreachable
+    """Require a matching, typed OSC reply from the console."""
+    WingClient(host, port).test_connection()
 
 
 class WingLimiterConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
@@ -45,7 +37,8 @@ class WingLimiterConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 await self.hass.async_add_executor_job(
                     _test_wing_connection, host, DEFAULT_PORT
                 )
-            except Exception:
+            except OSError as err:
+                _LOGGER.debug("WING connection failed: %s", err)
                 errors["base"] = "cannot_connect"
             else:
                 await self.async_set_unique_id(host)

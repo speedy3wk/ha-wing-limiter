@@ -1,4 +1,5 @@
 """Number entities for Behringer WING compressor threshold per main bus."""
+
 from __future__ import annotations
 
 from homeassistant.components.number import NumberEntity, NumberMode
@@ -47,10 +48,9 @@ class WingCompressorThreshold(CoordinatorEntity[WingLimiterCoordinator], NumberE
         self._key = f"main_{main_index}_comp_thr"
         self._attr_unique_id = f"{entry.entry_id}_main_{main_index}_comp_thr"
         self._attr_name = "Threshold"
-        wing_name = (
-            (coordinator.data or {}).get(f"main_{main_index}_name")
-            or f"Main {main_index}"
-        )
+        wing_name = (coordinator.data or {}).get(
+            f"main_{main_index}_name"
+        ) or f"Main {main_index}"
         self._attr_device_info = DeviceInfo(
             identifiers={(DOMAIN, f"{entry.entry_id}_main_{main_index}")},
             name=wing_name,

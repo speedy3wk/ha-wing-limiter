@@ -1,4 +1,5 @@
 """Wing Limiter integration — entry point."""
+
 from __future__ import annotations
 
 import logging
@@ -19,7 +20,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     host: str = entry.data[CONF_HOST]
     scan_interval: int = entry.data.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL)
 
-    coordinator = WingLimiterCoordinator(hass, host, scan_interval)
+    coordinator = WingLimiterCoordinator(hass, entry, host, scan_interval)
     # Raises ConfigEntryNotReady when WING is unreachable on startup
     await coordinator.async_config_entry_first_refresh()
 
