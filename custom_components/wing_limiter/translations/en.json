@@ -1,0 +1,20 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Wing Limiter",
+        "description": "Connects to your Behringer WING console via OSC/UDP (port 2223). Make sure the WING is on the same network and powered on.",
+        "data": {
+          "host": "WING IP Address",
+          "scan_interval": "Polling interval (seconds, 1–60)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Cannot connect to the WING console. Please check the IP address and ensure the WING is powered on and reachable."
+    },
+    "abort": {
+      "already_configured": "This WING console is already configured."
+    }
+  }
+}
