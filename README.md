@@ -1,5 +1,10 @@
 # Wing Limiter
 
+[![HACS Custom](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://www.hacs.xyz/docs/faq/custom_repositories/)
+[![Release](https://img.shields.io/github/v/release/speedy3wk/ha-wing-limiter.svg)](https://github.com/speedy3wk/ha-wing-limiter/releases)
+[![Validate](https://github.com/speedy3wk/ha-wing-limiter/actions/workflows/validate.yml/badge.svg)](https://github.com/speedy3wk/ha-wing-limiter/actions/workflows/validate.yml)
+[![Tests](https://github.com/speedy3wk/ha-wing-limiter/actions/workflows/tests.yml/badge.svg)](https://github.com/speedy3wk/ha-wing-limiter/actions/workflows/tests.yml)
+
 Control the compressors on the four main buses of a Behringer WING console from Home Assistant over OSC/UDP.
 
 ## Features
