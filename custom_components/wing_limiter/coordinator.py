@@ -18,6 +18,7 @@ from .parameters import PARAMETERS
 
 _LOGGER = logging.getLogger(__name__)
 if TYPE_CHECKING:
+    from .metering import WingMeterCoordinator
     from .profiles import WingProfiles
 type WingData = dict[str, OscValue | None]
 
@@ -30,6 +31,7 @@ class WingLimiterCoordinator(DataUpdateCoordinator[WingData]):
     ) -> None:
         self.client = WingClient(host)
         self.profiles: WingProfiles | None = None
+        self.meters: WingMeterCoordinator | None = None
         self.command_lock = asyncio.Lock()
         super().__init__(
             hass,
