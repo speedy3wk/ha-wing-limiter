@@ -17,6 +17,8 @@ Control the compressors on the four main buses of a Behringer WING console from 
 
 ### HACS
 
+[![Open your Home Assistant instance and show the integration in the HACS store](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=speedy3wk&repository=ha-wing-limiter&category=integration)
+
 1. In HACS, open **Custom repositories**.
 2. Add `https://github.com/speedy3wk/ha-wing-limiter` with category **Integration**.
 3. Install **Wing Limiter** and restart Home Assistant.
@@ -51,10 +53,6 @@ Each of the four main buses gets:
 ## Development
 
 The GitHub Actions validation workflow runs Home Assistant's `hassfest` and HACS checks on pushes and pull requests.
-
-## Migrating from the WING OSC integration
-
-The integration domain changed from `wing_osc` to `wing_limiter`. Back up Home Assistant, remove the old integration entry, remove its `custom_components/wing_osc` directory, then install this integration and add **Wing Limiter**. Existing entities are not migrated automatically; entity IDs and device registry entries can change, so update automations, scripts, and dashboards as needed.
 
 ## License
 
