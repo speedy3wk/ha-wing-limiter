@@ -5,6 +5,7 @@ from unittest.mock import AsyncMock
 import pytest_asyncio
 from homeassistant import config_entries
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers import device_registry as dr
 from homeassistant.helpers import frame
 
 from custom_components.wing_limiter.const import DOMAIN
@@ -15,6 +16,8 @@ async def hass(tmp_path):
     instance = HomeAssistant(str(tmp_path))
     frame.async_setup(instance)
     instance.config_entries = config_entries.ConfigEntries(instance, {})
+    dr.async_setup(instance)
+    await dr.async_load(instance)
     yield instance
     await instance.async_stop(force=True)
 
