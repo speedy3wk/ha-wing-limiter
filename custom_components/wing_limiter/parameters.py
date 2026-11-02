@@ -28,7 +28,9 @@ class Parameter:
             return str(value) in self.options
         if self.kind is str:
             return isinstance(value, str)
-        if type(value) not in (int, float) or not math.isfinite(value):
+        if not isinstance(value, (int, float)) or isinstance(value, bool):
+            return False
+        if not math.isfinite(value):
             return False
         if self.kind is int and value != int(value):
             return False

@@ -8,3 +8,9 @@ target-version = "py314"
 
 [tool.ruff.lint]
 select = ["E4", "E7", "E9", "F", "I"]
+
+[tool.pyright]
+include = ["custom_components/wing_limiter"]
+pythonVersion = "3.14"
+# HA intentionally mixes property and cached_property descriptors in entity bases.
+reportIncompatibleVariableOverride = false

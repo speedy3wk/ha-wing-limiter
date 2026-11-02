@@ -1,5 +1,6 @@
 {
   "name": "Wing Limiter",
   "content_in_root": false,
+  "homeassistant": "2026.10.4",
   "render_readme": true
 }

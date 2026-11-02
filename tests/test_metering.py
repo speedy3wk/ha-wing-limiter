@@ -2,7 +2,7 @@
 
 import asyncio
 import struct
-from unittest.mock import patch
+from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
@@ -42,6 +42,7 @@ async def test_bad_sources_reports_and_error_handling():
     stream.datagram_received(b"bad", ("127.0.0.1", 2222))
     assert stream.latest is None
     stream.datagram_received(packet, ("127.0.0.1", 2222))
+    assert stream.latest is not None
     assert stream.latest["main_1_input_l"] == 0
     await stream.async_close()
     assert stream.latest is None
@@ -50,6 +51,7 @@ async def test_bad_sources_reports_and_error_handling():
 async def test_real_tcp_subscription_and_udp_report():
     seen = []
     finished = asyncio.Event()
+    renewed = asyncio.Event()
 
     async def console(reader, writer):
         try:
@@ -69,6 +71,8 @@ async def test_real_tcp_subscription_and_udp_report():
             )
             transport.sendto(report_id + struct.pack(">32h", *([-256] * 32)))
             transport.close()
+            assert await reader.readexactly(7) == native_frame(b"\xd4" + report_id)
+            renewed.set()
             await reader.read()
         finally:
             writer.close()
@@ -82,12 +86,37 @@ async def test_real_tcp_subscription_and_udp_report():
         values = await stream.async_sample()
         assert values["main_1_input_l"] == -1
         assert seen
+        stream.renewed_at -= 5
+        assert await stream.async_sample() == values
+        await asyncio.wait_for(renewed.wait(), 2)
     finally:
         await stream.async_close()
         await asyncio.wait_for(finished.wait(), 2)
         server.close()
         await server.wait_closed()
     assert stream.transport is None and stream.writer is None
+
+
+async def test_stale_data_times_out_and_next_poll_reconnects(hass, entry):
+    meter = WingMeterCoordinator(hass, entry, "127.0.0.1")
+    stream = meter.stream
+    writer = MagicMock()
+    writer.is_closing.return_value = False
+    writer.wait_closed = AsyncMock()
+    stream.writer = writer
+    stream.latest = {"main_1_input_l": -10}
+    stream.received_at = asyncio.get_running_loop().time() - 3
+    stream.renewed_at = asyncio.get_running_loop().time()
+    await meter.async_refresh()
+    assert not meter.last_update_success
+    assert stream.writer is None and stream.latest is None
+    writer.close.assert_called_once()
+    with patch(
+        "asyncio.open_connection", side_effect=ConnectionRefusedError
+    ) as connect:
+        await meter.async_refresh()
+        connect.assert_awaited_once()
+    await meter.async_shutdown()
 
 
 async def test_meter_failure_is_independent_and_shutdown(coordinator, entry, hass):

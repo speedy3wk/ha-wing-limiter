@@ -23,6 +23,41 @@
       }
     }
   },
+  "services": {
+    "save_profile": {
+      "name": "Save profile",
+      "description": "Capture fresh COMP and sidechain settings for a main bus.",
+      "fields": {
+        "entry_id": {"name": "Integration entry"},
+        "main_index": {"name": "Main bus"},
+        "name": {"name": "Profile name"},
+        "overwrite": {"name": "Replace existing profile"}
+      }
+    },
+    "restore_profile": {
+      "name": "Restore profile",
+      "description": "Restore and verify settings, including compressor on/off. COMP must already be selected. UDP changes are not atomic.",
+      "fields": {
+        "entry_id": {"name": "Integration entry"},
+        "main_index": {"name": "Main bus"},
+        "name": {"name": "Profile name"}
+      }
+    },
+    "delete_profile": {
+      "name": "Delete profile",
+      "description": "Delete a saved main bus profile.",
+      "fields": {
+        "entry_id": {"name": "Integration entry"},
+        "main_index": {"name": "Main bus"},
+        "name": {"name": "Profile name"}
+      }
+    },
+    "list_profiles": {
+      "name": "List profiles",
+      "description": "Return saved profile names, main bus numbers and Dynamics models.",
+      "fields": {"entry_id": {"name": "Integration entry"}}
+    }
+  },
   "entity": {
     "switch": {
       "comp_on": {"name": "Compressor"},

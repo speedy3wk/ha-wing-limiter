@@ -6,7 +6,7 @@ import asyncio
 import math
 from typing import TypedDict
 
-import voluptuous as vol
+import probatio as vol
 from homeassistant.core import HomeAssistant, ServiceCall, SupportsResponse
 from homeassistant.exceptions import HomeAssistantError, ServiceValidationError
 from homeassistant.helpers.storage import Store
@@ -15,6 +15,19 @@ from .const import DOMAIN
 from .coordinator import WingLimiterCoordinator
 from .osc import OscValue
 from .parameters import PARAMETERS
+
+PROFILE_STORAGE_SCHEMA = vol.Schema(
+    {
+        vol.All(str, vol.Length(min=1, max=64)): {
+            vol.Required("main_index"): vol.All(int, vol.Range(min=1, max=4)),
+            vol.Required("model"): "COMP",
+            vol.Required("values"): {
+                vol.Required(key): parameter.encode
+                for key, parameter in PARAMETERS.items()
+            },
+        }
+    }
+)
 
 
 class Profile(TypedDict):
@@ -35,7 +48,11 @@ class WingProfiles:
         self.lock = asyncio.Lock()
 
     async def async_load(self) -> None:
-        self.profiles = await self.store.async_load() or {}
+        stored = await self.store.async_load()
+        try:
+            self.profiles = PROFILE_STORAGE_SCHEMA(stored if stored is not None else {})
+        except vol.Invalid as err:
+            raise HomeAssistantError(f"Invalid stored WING profiles: {err}") from err
 
     async def async_save(self, n: int, name: str, overwrite: bool = False) -> None:
         async with self.lock:
@@ -124,7 +141,7 @@ def async_setup_services(hass: HomeAssistant) -> None:
     """Resolve the target on every call so reloads never keep stale coordinators."""
     if hass.services.has_service(DOMAIN, "save_profile"):
         return
-    common = {
+    common: dict[object, object] = {
         vol.Required("entry_id"): str,
         vol.Required("main_index"): vol.All(vol.Coerce(int), vol.Range(min=1, max=4)),
         vol.Required("name"): vol.All(str, vol.Strip, vol.Length(min=1, max=64)),

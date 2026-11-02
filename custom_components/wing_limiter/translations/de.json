@@ -23,6 +23,41 @@
       }
     }
   },
+  "services": {
+    "save_profile": {
+      "name": "Profil speichern",
+      "description": "Aktuelle COMP- und Sidechain-Einstellungen eines Main-Busses erfassen.",
+      "fields": {
+        "entry_id": {"name": "Integrationseintrag"},
+        "main_index": {"name": "Main-Bus"},
+        "name": {"name": "Profilname"},
+        "overwrite": {"name": "Vorhandenes Profil ersetzen"}
+      }
+    },
+    "restore_profile": {
+      "name": "Profil wiederherstellen",
+      "description": "Einstellungen inklusive Kompressor-Ein/Aus wiederherstellen und prüfen. COMP muss bereits ausgewählt sein. UDP-Änderungen sind nicht atomar.",
+      "fields": {
+        "entry_id": {"name": "Integrationseintrag"},
+        "main_index": {"name": "Main-Bus"},
+        "name": {"name": "Profilname"}
+      }
+    },
+    "delete_profile": {
+      "name": "Profil löschen",
+      "description": "Ein gespeichertes Main-Bus-Profil löschen.",
+      "fields": {
+        "entry_id": {"name": "Integrationseintrag"},
+        "main_index": {"name": "Main-Bus"},
+        "name": {"name": "Profilname"}
+      }
+    },
+    "list_profiles": {
+      "name": "Profile auflisten",
+      "description": "Gespeicherte Profilnamen, Main-Bus-Nummern und Dynamics-Modelle zurückgeben.",
+      "fields": {"entry_id": {"name": "Integrationseintrag"}}
+    }
+  },
   "entity": {
     "switch": {
       "comp_on": {"name": "Kompressor"},

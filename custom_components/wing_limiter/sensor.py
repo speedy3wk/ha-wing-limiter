@@ -38,7 +38,6 @@ class WingModelSensor(WingEntity, SensorEntity):
 class WingMeterSensor(WingEntity, SensorEntity):
     _attr_native_unit_of_measurement = "dB"
     _attr_state_class = SensorStateClass.MEASUREMENT
-    _unrecorded_attributes = frozenset({"all"})
 
     async def async_added_to_hass(self) -> None:
         await super().async_added_to_hass()

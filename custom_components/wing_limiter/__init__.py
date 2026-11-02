@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import logging
-
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_HOST
 from homeassistant.core import HomeAssistant
@@ -12,8 +10,6 @@ from .const import CONF_METERING, CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL, DOM
 from .coordinator import WingLimiterCoordinator
 from .metering import WingMeterCoordinator
 from .profiles import WingProfiles, async_setup_services, profile_store
-
-_LOGGER = logging.getLogger(__name__)
 
 PLATFORMS = ["switch", "number", "select", "sensor"]
 

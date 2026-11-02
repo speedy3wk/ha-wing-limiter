@@ -6,12 +6,13 @@ import pytest
 from homeassistant.exceptions import HomeAssistantError, ServiceValidationError
 
 from custom_components.wing_limiter.const import DOMAIN
+from custom_components.wing_limiter.osc import OscValue
 from custom_components.wing_limiter.parameters import PARAMETERS
 from custom_components.wing_limiter.profiles import WingProfiles, async_setup_services
 
 
 def complete_data():
-    result = {"main_1_model": "COMP"}
+    result: dict[str, OscValue] = {"main_1_model": "COMP"}
     for key, param in PARAMETERS.items():
         value = param.options[0] if param.options else param.minimum
         if param.kind is float:
@@ -96,3 +97,14 @@ async def test_service_lifecycle_and_entry_validation(coordinator, hass, entry):
             blocking=True,
             return_response=True,
         )
+
+
+async def test_invalid_stored_profile_is_not_silently_accepted(coordinator, entry):
+    profiles = WingProfiles(coordinator, entry.entry_id)
+    with patch.object(
+        profiles.store,
+        "async_load",
+        return_value={"Broken": {"main_index": 1, "model": "COMP", "values": {}}},
+    ):
+        with pytest.raises(HomeAssistantError, match="Invalid stored WING profiles"):
+            await profiles.async_load()
