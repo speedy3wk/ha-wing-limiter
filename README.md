@@ -55,3 +55,7 @@ The GitHub Actions validation workflow runs Home Assistant's `hassfest` and HACS
 ## Migrating from the WING OSC integration
 
 The integration domain changed from `wing_osc` to `wing_limiter`. Back up Home Assistant, remove the old integration entry, remove its `custom_components/wing_osc` directory, then install this integration and add **Wing Limiter**. Existing entities are not migrated automatically; entity IDs and device registry entries can change, so update automations, scripts, and dashboards as needed.
+
+## License
+
+This project is distributed under the MIT License. See [LICENSE](./LICENSE).

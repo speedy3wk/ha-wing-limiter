@@ -1,6 +1,5 @@
 {
   "name": "Wing Limiter",
   "content_in_root": false,
-  "domains": ["wing_limiter"],
   "render_readme": true
 }
