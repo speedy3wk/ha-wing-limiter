@@ -18,7 +18,9 @@ PLATFORMS = ["switch", "number", "select", "sensor"]
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     host: str = entry.data[CONF_HOST]
-    scan_interval: int = entry.data.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL)
+    scan_interval: int = entry.options.get(
+        CONF_SCAN_INTERVAL, entry.data.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL)
+    )
 
     coordinator = WingLimiterCoordinator(hass, entry, host, scan_interval)
     # Raises ConfigEntryNotReady when WING is unreachable on startup

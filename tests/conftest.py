@@ -16,6 +16,7 @@ async def hass(tmp_path):
     instance = HomeAssistant(str(tmp_path))
     frame.async_setup(instance)
     instance.config_entries = config_entries.ConfigEntries(instance, {})
+    await instance.config_entries.async_initialize()
     dr.async_setup(instance)
     await dr.async_load(instance)
     yield instance

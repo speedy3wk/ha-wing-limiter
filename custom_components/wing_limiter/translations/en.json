@@ -3,18 +3,57 @@
     "step": {
       "user": {
         "title": "Wing Limiter",
-        "description": "Connects to your Behringer WING console via OSC/UDP (port 2223). Make sure the WING is on the same network and powered on.",
-        "data": {
-          "host": "WING IP Address",
-          "scan_interval": "Polling interval (seconds, 1–60)"
-        }
+        "description": "Connect to your WING via OSC/UDP port 2223.",
+        "data": {"host": "WING IP address or hostname", "scan_interval": "Polling interval (seconds)"}
+      },
+      "reconfigure": {
+        "title": "Change WING address",
+        "description": "Change the address without recreating devices or entities.",
+        "data": {"host": "WING IP address or hostname"}
       }
     },
-    "error": {
-      "cannot_connect": "Cannot connect to the WING console. Please check the IP address and ensure the WING is powered on and reachable."
+    "error": {"cannot_connect": "No valid WING response. Check the address, network and OSC settings."},
+    "abort": {"already_configured": "This WING console is already configured."}
+  },
+  "options": {
+    "step": {
+      "init": {
+        "description": "Metering opens an additional TCP connection to port 2222 and receives UDP on a dynamically assigned port. Leave disabled unless needed.",
+        "data": {"scan_interval": "Polling interval (seconds)", "metering": "Enable level and gain reduction metering"}
+      }
+    }
+  },
+  "entity": {
+    "switch": {
+      "comp_on": {"name": "Compressor"},
+      "comp_auto": {"name": "Automatic timing"}
     },
-    "abort": {
-      "already_configured": "This WING console is already configured."
+    "number": {
+      "comp_thr": {"name": "Threshold"},
+      "comp_gain": {"name": "Make-up gain"},
+      "comp_mix": {"name": "Dry/wet mix"},
+      "comp_att": {"name": "Attack"},
+      "comp_hld": {"name": "Hold"},
+      "comp_rel": {"name": "Release"},
+      "comp_knee": {"name": "Knee"},
+      "sc_f": {"name": "Sidechain frequency"},
+      "sc_q": {"name": "Sidechain Q"}
+    },
+    "select": {
+      "comp_ratio": {"name": "Ratio"},
+      "comp_det": {"name": "Detector"},
+      "comp_env": {"name": "Envelope"},
+      "sc_type": {"name": "Sidechain filter"},
+      "sc_src": {"name": "Sidechain source"},
+      "sc_tap": {"name": "Sidechain tap"}
+    },
+    "sensor": {
+      "model": {"name": "Dynamics model"},
+      "input_l": {"name": "Input left"},
+      "input_r": {"name": "Input right"},
+      "output_l": {"name": "Output left"},
+      "output_r": {"name": "Output right"},
+      "gain_reduction": {"name": "Gain reduction"}
     }
   }
 }

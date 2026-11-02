@@ -9,6 +9,7 @@ MAIN_COUNT = 4
 
 # Config entry keys
 CONF_SCAN_INTERVAL = "scan_interval"
+CONF_METERING = "metering"
 
 # OSC address patterns — use .format(main_index) where main_index is 1..4
 OSC_COMP_ON = "/main/{}/dyn/on"  # INT 0..1  — compressor switch

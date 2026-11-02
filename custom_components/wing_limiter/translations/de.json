@@ -1,0 +1,59 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Wing Limiter",
+        "description": "Verbindung zur WING über OSC/UDP-Port 2223 herstellen.",
+        "data": {"host": "WING-IP-Adresse oder Hostname", "scan_interval": "Abfrageintervall (Sekunden)"}
+      },
+      "reconfigure": {
+        "title": "WING-Adresse ändern",
+        "description": "Die Adresse ändern, ohne Geräte oder Entitäten neu anzulegen.",
+        "data": {"host": "WING-IP-Adresse oder Hostname"}
+      }
+    },
+    "error": {"cannot_connect": "Keine gültige WING-Antwort. Adresse, Netzwerk und OSC-Einstellungen prüfen."},
+    "abort": {"already_configured": "Diese WING-Konsole ist bereits eingerichtet."}
+  },
+  "options": {
+    "step": {
+      "init": {
+        "description": "Metering öffnet eine zusätzliche TCP-Verbindung zu Port 2222 und empfängt UDP auf einem dynamischen Port. Nur bei Bedarf aktivieren.",
+        "data": {"scan_interval": "Abfrageintervall (Sekunden)", "metering": "Pegel- und Gain-Reduction-Metering aktivieren"}
+      }
+    }
+  },
+  "entity": {
+    "switch": {
+      "comp_on": {"name": "Kompressor"},
+      "comp_auto": {"name": "Automatische Zeitsteuerung"}
+    },
+    "number": {
+      "comp_thr": {"name": "Threshold"},
+      "comp_gain": {"name": "Make-up-Gain"},
+      "comp_mix": {"name": "Dry/Wet-Mix"},
+      "comp_att": {"name": "Attack"},
+      "comp_hld": {"name": "Hold"},
+      "comp_rel": {"name": "Release"},
+      "comp_knee": {"name": "Knee"},
+      "sc_f": {"name": "Sidechain-Frequenz"},
+      "sc_q": {"name": "Sidechain-Q"}
+    },
+    "select": {
+      "comp_ratio": {"name": "Ratio"},
+      "comp_det": {"name": "Detektor"},
+      "comp_env": {"name": "Hüllkurve"},
+      "sc_type": {"name": "Sidechain-Filter"},
+      "sc_src": {"name": "Sidechain-Quelle"},
+      "sc_tap": {"name": "Sidechain-Abgriff"}
+    },
+    "sensor": {
+      "model": {"name": "Dynamics-Modell"},
+      "input_l": {"name": "Eingang links"},
+      "input_r": {"name": "Eingang rechts"},
+      "output_l": {"name": "Ausgang links"},
+      "output_r": {"name": "Ausgang rechts"},
+      "gain_reduction": {"name": "Gain Reduction"}
+    }
+  }
+}

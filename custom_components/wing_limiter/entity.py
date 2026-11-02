@@ -58,7 +58,9 @@ class WingEntity(CoordinatorEntity[WingLimiterCoordinator]):
     @callback
     def _handle_coordinator_update(self) -> None:
         registry = dr.async_get(self.hass)
-        device = registry.async_get_device_by_identifier(self._identifier, self._entry_id)
+        device = registry.async_get_device_by_identifier(
+            self._identifier, self._entry_id
+        )
         if device and device.name != self.bus_name:
             registry.async_update_device(device.id, name=self.bus_name)
         super()._handle_coordinator_update()
