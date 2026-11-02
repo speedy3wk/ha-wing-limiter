@@ -29,7 +29,16 @@ jobs:
         if: matrix.ha != 'stable'
         env:
           HA_REF: ${{ matrix.ha }}
-        run: pip install "homeassistant @ https://github.com/home-assistant/core/archive/${HA_REF}.tar.gz"
+        run: |
+          for attempt in 1 2 3; do
+            if pip install "homeassistant @ https://github.com/home-assistant/core/archive/${HA_REF}.tar.gz"; then
+              exit 0
+            fi
+            if [ "$attempt" -lt 3 ]; then
+              sleep "$((attempt * 15))"
+            fi
+          done
+          exit 1
       - run: ruff check custom_components tests
       - run: ruff format --check custom_components tests
       - run: pyright --pythonpath "$(command -v python)"
