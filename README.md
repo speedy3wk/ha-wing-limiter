@@ -25,25 +25,19 @@ Control the compressors on the four main buses of a Behringer WING console from 
 
 ### Marketplace (recommended, Home Assistant 2026.11+)
 
-Since Home Assistant 2026.11, HACS is built in as the [Marketplace](https://www.home-assistant.io/integrations/marketplace/). No separate HACS installation is needed.
+The [Marketplace](https://www.home-assistant.io/integrations/marketplace/) is built into Home Assistant 2026.11 and newer.
+
+[![Open in Marketplace](https://my.home-assistant.io/badges/marketplace_repository.svg)](https://my.home-assistant.io/redirect/marketplace_repository/?owner=speedy3wk&repository=ha-wing-limiter&category=integration)
 
 1. Open **Settings → Marketplace** as an administrator and accept the community-content warning if prompted.
 2. Select **Add from link**, enter `https://github.com/speedy3wk/ha-wing-limiter` and select **Add**. Connect GitHub if prompted. If asked for a content type, select **Integration**.
 3. Open **Wing Limiter** and select **Install**.
 4. Follow the integration setup flow. If it does not open, add **Wing Limiter** under **Settings → Devices & services → Add integration**. Restart only if the Marketplace requests it.
 
-Existing HACS installations migrate automatically when updating to Home Assistant 2026.11; installed integrations and their update entities are kept. Integration updates still require a Home Assistant restart.
+Integration updates still require a Home Assistant restart.
 
-### HACS (Home Assistant versions before 2026.11)
-
-For older supported Home Assistant versions, use the following legacy HACS instructions.
-
-[![Open your Home Assistant instance and show the integration in the HACS store](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=speedy3wk&repository=ha-wing-limiter&category=integration)
-
-1. In HACS, open **Custom repositories**.
-2. Add `https://github.com/speedy3wk/ha-wing-limiter` with category **Integration**.
-3. Install **Wing Limiter** and restart Home Assistant.
-4. Add the integration under **Settings → Devices & services → Add integration**.
+On older supported Home Assistant versions, add this repository to HACS as an **Integration**, install it and restart before adding the integration.
+Existing HACS installations migrate automatically to the Marketplace when updating to Home Assistant 2026.11.
 
 ### Manual
 
@@ -125,7 +119,7 @@ response_variable: saved_profiles
 
 ## Development
 
-The validation workflow runs `hassfest` and HACS checks. Tests cover OSC UDP framing, model gating, entity identity, reconfiguration, persistent profiles and native TCP/UDP metering using a simulated console. CI runs against pinned stable HA 2026.10.4, beta 2026.11.0b2 and the moving `dev` branch, including a weekly scheduled run. Development/beta checks detect upcoming changes; they do not guarantee compatibility with unreleased versions.
+The validation workflow runs `hassfest` and repository metadata checks. Tests cover OSC UDP framing, model gating, entity identity, reconfiguration, persistent profiles and native TCP/UDP metering using a simulated console. CI runs against pinned stable HA 2026.10.4, beta 2026.11.0b2 and the moving `dev` branch, including a weekly scheduled run. Development/beta checks detect upcoming changes; they do not guarantee compatibility with unreleased versions.
 
 ```sh
 python3.14 -m venv .venv
